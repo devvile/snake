@@ -2,8 +2,14 @@
 const segments = document.querySelectorAll(".segment");
 const snake = document.getElementById("snake");
 snake.style.position = "absolute";
+const snakeAll = document.getElementsByClassName(".snake-all");
+const moveCounter = document.querySelector(".move");
+const wisnia = document.querySelector(".wisnia");
+const przedluz = document.getElementById("przedluz");
 let moveLog = []; //LOG REMEMBERING MOVEMENTS
 let turn_nr = 0;
+let score = 0;
+const scoreBoard = document.querySelector(".cherries");
 
 //CONFIG
 
@@ -13,15 +19,18 @@ let position = {
   l: 300,
   dir: "top",
 };
+
 let wonszSize = 30; //SNAKE SIZE
 let movementSpeed = 1 * wonszSize;
+
+let wisniaPosition = {
+  t: 0,
+  l: 0,
+};
 
 //EVENTS LISTENERS
 
 document.addEventListener("keydown", Turn);
-document.addEventListener("click", () => {
-  console.log(moveLog);
-}); //I USE IT TO LOOK INTO LOG AND DEBUG
 
 //FUNCTIONS
 
@@ -29,6 +38,14 @@ document.addEventListener("click", () => {
 function setPosition(t, l, obj) {
   obj.style.top = `${t}px`;
   obj.style.left = `${l}px`;
+}
+
+//MAKE CHERRY
+function generujWisnie() {
+  wisnia.style.display = "block";
+  wisniaPosition.t = Math.floor(Math.random() * 19 + 1) * wonszSize;
+  wisniaPosition.l = Math.floor(Math.random() * 19 + 1) * wonszSize;
+  setPosition(wisniaPosition.t, wisniaPosition.l, wisnia);
 }
 
 //ASIGNMENT OF ID FOR EACH SEGMENT
@@ -48,9 +65,8 @@ function setSegments(t, l) {
       t: t + segment.id * wonszSize,
       l: l,
     };
-    // moveLog.push(logObject);
+    moveLog.unshift(logObject);
   });
-  //moveLog = [];
 }
 
 //MAKING TURNS
@@ -101,33 +117,68 @@ function movement() {
     t: position.t,
     l: position.l,
   };
-  moveLog.unshift(logObject);
-  if (position.dir == "bot") {
-    position.t += movementSpeed;
-  } else if (position.dir == "top") {
-    position.t -= movementSpeed;
-  } else if (position.dir == "left") {
-    position.l -= movementSpeed;
+  //zapisac weza pozycje na pottrzeby gryzienia sie i generacji wisienki
+  // wonsz = []
+  // for each segement dodaj jego pozycje do wonsz z loga
+  if (
+    position.t < 0 ||
+    position.t >= 600 ||
+    position.l < 0 ||
+    position.l >= 600
+  ) {
+    outOfBoard();
   } else {
-    position.l += movementSpeed;
-  }
+    if (position.t === wisniaPosition.t && position.l === wisniaPosition.l) {
+      generujWisnie();
+      dodajSegment();
+      dodajPunkt();
+    }
+    moveLog.unshift(logObject);
+    if (position.dir == "bot") {
+      position.t += movementSpeed;
+    } else if (position.dir == "top") {
+      position.t -= movementSpeed;
+    } else if (position.dir == "left") {
+      position.l -= movementSpeed;
+    } else {
+      position.l += movementSpeed;
+    }
 
-  segments.forEach((segment) => {
-    let destination = moveLog[segment.id];
-    console.log(destination);
-    setPosition(destination.t, destination.l, segment);
-  });
+    segments.forEach((segment) => {
+      let destination = moveLog[segment.id];
+      setPosition(destination.t, destination.l, segment);
+    });
+    moveCounter.textContent = `  ${turn_nr}`;
+  }
 }
 
-//zapis powstaje na przyszle ruchy i on zostaje dalej ,trzeba robic refresh
+//ADD SEGMENT
+function dodajSegment() {
+  let nowySegment = document.createElement("div");
+  nowySegment.classList.add("segment");
+  snakeAll.innerHTML += nowySegment;
+}
+//ADD SCORE TO SCOREBOARD
+function dodajPunkt() {
+  score++;
+  scoreBoard.textContent = score;
+}
+
+// FAILURE EVENTS
+
+function outOfBoard() {
+  console.log("koniec");
+  clearInterval(MoveSnake);
+}
 
 //TIME
-let MoveTimeHead = setInterval(movement, 300);
+let MoveSnake = setInterval(movement, 300);
 
 // MAIN
 function main() {
   SegmentsID();
   setSegments(position.t, position.l);
-  MoveTimeHead;
+  generujWisnie();
+  MoveSnake;
 }
 main();

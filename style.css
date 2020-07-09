@@ -26,3 +26,28 @@
   margin: 30px auto;
   position: relative;
 }
+
+.liczniki {
+  position: absolute;
+  bottom: 5vh;
+  left: 10vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.movements {
+  display: flex;
+  align-items: center;
+}
+
+.wisnia {
+  background-color: red;
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  position: absolute;
+  display: none;
+}
+.scoreboard {
+  display: flex;
+}
