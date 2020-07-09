@@ -1,16 +1,18 @@
 //ELEMENTS
-const segments = document.querySelectorAll(".segment");
+let segments = document.querySelectorAll(".segment");
 const snake = document.getElementById("snake");
 snake.style.position = "absolute";
-const snakeAll = document.getElementsByClassName(".snake-all");
+const dodane = document.querySelector(".dodane");
 const moveCounter = document.querySelector(".move");
 const wisnia = document.querySelector(".wisnia");
 const przedluz = document.getElementById("przedluz");
+const lista = document.querySelector(".lista");
+const scoreBoard = document.querySelector(".cherries");
+const segmenty = document.querySelector(".segmenty");
+
 let moveLog = []; //LOG REMEMBERING MOVEMENTS
 let turn_nr = 0;
 let score = 0;
-const scoreBoard = document.querySelector(".cherries");
-
 //CONFIG
 
 //start position
@@ -117,16 +119,18 @@ function movement() {
     t: position.t,
     l: position.l,
   };
-  //zapisac weza pozycje na pottrzeby gryzienia sie i generacji wisienki
-  // wonsz = []
-  // for each segement dodaj jego pozycje do wonsz z loga
+  segments = document.querySelectorAll(".segment");
+  let Wonsz = ustalWensza();
+  console.log(Wonsz);
   if (
     position.t < 0 ||
     position.t >= 600 ||
     position.l < 0 ||
-    position.l >= 600
+    position.l >= 600 // dodac eats
   ) {
     outOfBoard();
+  } else if (Wonsz.includes(logObject)) {
+    eatsItself();
   } else {
     if (position.t === wisniaPosition.t && position.l === wisniaPosition.l) {
       generujWisnie();
@@ -154,10 +158,25 @@ function movement() {
 
 //ADD SEGMENT
 function dodajSegment() {
-  let nowySegment = document.createElement("div");
+  const nowySegment = document.createElement("div");
+  dodane.appendChild(nowySegment);
+  nowySegment.id = segments.length;
+  let destination = moveLog[nowySegment.id - 1];
+  setPosition(destination.t, destination.l, nowySegment);
   nowySegment.classList.add("segment");
-  snakeAll.innerHTML += nowySegment;
 }
+
+//CHECK WHERE IS SNAKE
+function ustalWensza(leng) {
+  let obecnyWonsz = [];
+  let i = 0;
+  while (i < segments.length) {
+    obecnyWonsz.unshift(moveLog[i]);
+    i++;
+  }
+  return obecnyWonsz;
+}
+
 //ADD SCORE TO SCOREBOARD
 function dodajPunkt() {
   score++;
@@ -167,6 +186,11 @@ function dodajPunkt() {
 // FAILURE EVENTS
 
 function outOfBoard() {
+  console.log("koniec");
+  clearInterval(MoveSnake);
+}
+
+function eatsItself() {
   console.log("koniec");
   clearInterval(MoveSnake);
 }
@@ -181,4 +205,5 @@ function main() {
   generujWisnie();
   MoveSnake;
 }
+
 main();
