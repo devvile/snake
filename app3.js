@@ -48,13 +48,13 @@ function setSegments(t, l) {
       t: t + segment.id * wonszSize,
       l: l,
     };
-    moveLog.push(logObject);
+    // moveLog.push(logObject);
   });
+  //moveLog = [];
 }
 
 //MAKING TURNS
 function Turn(e) {
-  console.log("bank");
   if (position.dir == "top") {
     switch (e.code) {
       case "KeyA":
@@ -101,7 +101,7 @@ function movement() {
     t: position.t,
     l: position.l,
   };
-  moveLog.push(logObject);
+  moveLog.unshift(logObject);
   if (position.dir == "bot") {
     position.t += movementSpeed;
   } else if (position.dir == "top") {
@@ -113,7 +113,7 @@ function movement() {
   }
 
   segments.forEach((segment) => {
-    let destination = moveLog[turn_nr - segment.id];
+    let destination = moveLog[segment.id];
     console.log(destination);
     setPosition(destination.t, destination.l, segment);
   });
