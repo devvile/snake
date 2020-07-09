@@ -21,10 +21,10 @@ let position = {
   l: 300,
   dir: "top",
 };
-
+let segmentyStart = 3;
 let wonszSize = 30; //SNAKE SIZE
 let movementSpeed = 1 * wonszSize;
-let timeRate = 200;
+let timeRate = 150;
 let wisniaPosition = {
   t: 0,
   l: 0,
@@ -59,15 +59,15 @@ function SegmentsID() {
   });
 }
 
-//SETTING POSITION OF SEGMENTS (STARTING)
+//SETTING POSITION OF SEGMENTS (STARTING) <--------- ostatni BUG
 function setSegments(t, l) {
   segments.forEach((segment) => {
-    setPosition(t + segment.id * wonszSize, l, segment);
     let logObject = {
       t: t + segment.id * wonszSize,
       l: l,
     };
-    moveLog.unshift(logObject);
+    setPosition(logObject.t, logObject.l, segment);
+    moveLog.push(logObject);
   });
 }
 
@@ -157,6 +157,19 @@ function movement() {
     moveCounter.textContent = `  ${turn_nr}`;
   }
 }
+/*
+//GENERATE START SEGMENTS
+function startSeg(segmentyStart){
+while (i < segmentyStart) {
+  const nowySegment = document.createElement("div");
+  dodane.appendChild(nowySegment);
+  nowySegment.id = segments.length;
+  let destination = moveLog[nowySegment.id - 1];
+  setPosition(destination.t, destination.l, nowySegment);
+  nowySegment.classList.add("segment");
+  i++
+}
+*/
 
 //ADD SEGMENT
 function dodajSegment() {
