@@ -9,6 +9,10 @@ const przedluz = document.getElementById("przedluz");
 const lista = document.querySelector(".lista");
 const scoreBoard = document.querySelector(".cherries");
 const segmenty = document.querySelector(".segmenty");
+const content = document.querySelector(".page-content");
+const napisy = document.querySelector(".gameOver");
+const wyniki = document.getElementById("wyniki");
+const newGame = document.getElementById("newGame");
 
 let moveLog = []; //LOG REMEMBERING MOVEMENTS
 let turn_nr = 0;
@@ -33,6 +37,9 @@ let wisniaPosition = {
 //EVENTS LISTENERS
 
 document.addEventListener("keydown", Turn);
+newGame.addEventListener("click", () => {
+  window.location.reload(true);
+});
 
 //FUNCTIONS
 
@@ -157,19 +164,6 @@ function movement() {
     moveCounter.textContent = `  ${turn_nr}`;
   }
 }
-/*
-//GENERATE START SEGMENTS
-function startSeg(segmentyStart){
-while (i < segmentyStart) {
-  const nowySegment = document.createElement("div");
-  dodane.appendChild(nowySegment);
-  nowySegment.id = segments.length;
-  let destination = moveLog[nowySegment.id - 1];
-  setPosition(destination.t, destination.l, nowySegment);
-  nowySegment.classList.add("segment");
-  i++
-}
-*/
 
 //ADD SEGMENT
 function dodajSegment() {
@@ -211,6 +205,9 @@ function dodajPunkt() {
 function endgame() {
   console.log("koniec");
   clearInterval(MoveSnake);
+  content.classList.add("active");
+  napisy.classList.add("show");
+  wyniki.textContent = `Your score is: ${score}`;
 }
 
 //TIME

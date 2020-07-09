@@ -22,9 +22,15 @@
 .plansza {
   width: 600px;
   height: 600px;
-  border: 1px solid black;
+  border: 3px solid darkgray;
+  outline: 3px solid black;
   margin: 30px auto;
   position: relative;
+}
+
+.ramka {
+  border: 3px solid gray;
+  padding: 2px;
 }
 
 .liczniki {
@@ -41,10 +47,10 @@
 }
 
 .wisnia {
-  background-color: red;
+  background: url(cherry.svg);
+  background-size: 30px 30px;
   height: 30px;
   width: 30px;
-  border-radius: 20px;
   position: absolute;
   display: none;
 }
@@ -56,4 +62,33 @@
   width: 200px;
   height: 500px;
   background-color: linen;
+}
+
+.active {
+  opacity: 0;
+  transition: 1s 0.2s ease-in;
+}
+
+.gameOver {
+  color: darkred;
+  opacity: 0;
+  position: fixed;
+  margin: auto;
+  top: 40%;
+  left: 25%;
+  font-size: 80px;
+  text-align: center;
+}
+.show {
+  opacity: 1;
+  transition: 1s 1s ease-in;
+}
+
+button {
+  width: 120px;
+  height: 60px;
+  color: white;
+  background-color: gray;
+  border-radius: 10px;
+  font-size: 15px;
 }

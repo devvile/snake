@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-  
-    <div class="plansza">
-    <div class="wisnia"></div>
+  <div class="page-content">
+    <div class="ramka">
+      <div class="plansza">
+      <div class="wisnia"></div>
       <div class="dodane">
         <div class="snake-head segment" id="snake"></div>
         <div class="segment"></div>
@@ -17,6 +18,7 @@
         <div class="segment"></div>
       </div>
     </div>
+  </div>
     <div class="liczniki">
       <div class="movements">
         <h3>Moves:  </h2>
@@ -27,6 +29,12 @@
         <h2 class="cherries"> 0</h2>
       </div>
     </div>
+  </div>
+  <div class="gameOver">
+    <h2>GAME OVER</h2>
+    <h3 id='wyniki'></h3>
+    <button id = "newGame">NEW GAME</button>
+  </div>
 
     <script src="app3.js"></script>
   </body>
