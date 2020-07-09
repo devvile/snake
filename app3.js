@@ -24,7 +24,7 @@ let position = {
 
 let wonszSize = 30; //SNAKE SIZE
 let movementSpeed = 1 * wonszSize;
-
+let timeRate = 200;
 let wisniaPosition = {
   t: 0,
   l: 0,
@@ -121,22 +121,24 @@ function movement() {
   };
   segments = document.querySelectorAll(".segment");
   let Wonsz = ustalWensza();
-  console.log(Wonsz);
   if (
     position.t < 0 ||
     position.t >= 600 ||
     position.l < 0 ||
     position.l >= 600 // dodac eats
   ) {
-    outOfBoard();
-  } else if (Wonsz.includes(logObject)) {
-    eatsItself();
+    endgame();
   } else {
     if (position.t === wisniaPosition.t && position.l === wisniaPosition.l) {
       generujWisnie();
       dodajSegment();
       dodajPunkt();
     }
+    Wonsz.forEach((e) => {
+      if (turn_nr != 1 && position.t == e.t && position.l == e.l) {
+        endgame();
+      }
+    });
     moveLog.unshift(logObject);
     if (position.dir == "bot") {
       position.t += movementSpeed;
@@ -171,10 +173,18 @@ function ustalWensza(leng) {
   let obecnyWonsz = [];
   let i = 0;
   while (i < segments.length) {
-    obecnyWonsz.unshift(moveLog[i]);
+    obecnyWonsz.push(moveLog[i]);
     i++;
   }
   return obecnyWonsz;
+}
+
+function wonszTest(logt, logl, Wonsz) {
+  Wonsz.forEach((e) => {
+    if (e.t === logt && e.l === logl) {
+      return true;
+    }
+  });
 }
 
 //ADD SCORE TO SCOREBOARD
@@ -185,18 +195,13 @@ function dodajPunkt() {
 
 // FAILURE EVENTS
 
-function outOfBoard() {
-  console.log("koniec");
-  clearInterval(MoveSnake);
-}
-
-function eatsItself() {
+function endgame() {
   console.log("koniec");
   clearInterval(MoveSnake);
 }
 
 //TIME
-let MoveSnake = setInterval(movement, 300);
+let MoveSnake = setInterval(movement, timeRate);
 
 // MAIN
 function main() {
